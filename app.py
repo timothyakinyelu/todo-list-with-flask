@@ -1,3 +1,4 @@
+from itertools import groupby
 import sqlite3
 from flask import Flask, render_template
 
@@ -12,9 +13,16 @@ app.static_folder = 'static'
 @app.route("/")
 def index():
     conn = get_db_connection()
-    tasks = conn.execute('SELECT * FROM tasks').fetchall()
+    tasks = conn.execute(
+        'SELECT i.*, t.name FROM tasks i JOIN task_types t ON i.task_type_id = t.id ORDER BY t.name'
+    ).fetchall()
+    
+    lists = {}
+    for k, g in groupby(tasks, key=lambda t: t['name']):
+        lists[k] = list(g)  
+     
     conn.close()
-    return render_template('index.html', tasks=tasks)
+    return render_template('index.html', lists=lists)
 
 @app.route("/todo-detail")
 def detail():
