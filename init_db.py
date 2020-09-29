@@ -15,7 +15,7 @@ cur.execute('INSERT INTO tasks (task_type_id, title, content) VALUES(?, ?, ?)', 
 cur.execute('INSERT INTO tasks (task_type_id, title, content) VALUES(?, ?, ?)', (2, 'Write GraphQL Pagination', 'Write a data table code with windowed pagination with ApolloClient'))
 cur.execute('INSERT INTO tasks (task_type_id, title, content) VALUES(?, ?, ?)', (3, 'Start Week 3', 'Start week 3 of automation course on coursera'))
 cur.execute('INSERT INTO tasks (task_type_id, title, content) VALUES(?, ?, ?)', (3, 'HackerRank Tests', 'Take tests to move up a level'))
-cur.execute('INSERT INTO tasks (task_type_id, title, content, urgency) VALUES(?, ?, ?, ?)', (1, 'Find food', 'Make garri to drink before groundnut spoils', 'HIGH'))
+cur.execute('INSERT INTO tasks (task_type_id, title, content, priority) VALUES(?, ?, ?, ?)', (1, 'Find food', 'Make garri to drink before groundnut spoils', 'HIGH'))
 
 connection.commit()
 connection.close()

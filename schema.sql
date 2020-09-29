@@ -12,7 +12,7 @@ CREATE TABLE tasks(
     task_type_id INTEGER NOT NULL,
     title VARCHAR NOT NULL,
     content TEXT NOT NULL,
-    urgency VARCHAR NOT NULL DEFAULT LOW,
+    priority VARCHAR NOT NULL DEFAULT LOW,
     complete INTEGER NOT NULL DEFAULT 0,
     date_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (task_type_id) REFERENCES task_types (id)
