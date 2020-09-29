@@ -7,9 +7,15 @@ with open('schema.sql') as f:
     
 cur = connection.cursor()
 
-cur.execute('INSERT INTO tasks (title, content) VALUES(?, ?)', ('Write Todo App', 'Write a todo app with python and flask'))
-cur.execute('INSERT INTO tasks (title, content) VALUES(?, ?)', ('Start Week 3', 'Start week 3 of automation course on coursera'))
-cur.execute('INSERT INTO tasks (title, content, urgency) VALUES(?, ?, ?)', ('Find food', 'Make garri to drink before groundnut spoils', 'HIGH'))
+cur.execute('INSERT INTO task_types (name) VALUES(?)', ('Personal',))
+cur.execute('INSERT INTO task_types (name) VALUES(?)', ('Work',))
+cur.execute('INSERT INTO task_types (name) VALUES(?)', ('Study',))
+
+cur.execute('INSERT INTO tasks (task_type_id, title, content) VALUES(?, ?, ?)', (2, 'Write Todo App', 'Write a todo app with python and flask'))
+cur.execute('INSERT INTO tasks (task_type_id, title, content) VALUES(?, ?, ?)', (2, 'Write GraphQL Pagination', 'Write a data table code with windowed pagination with ApolloClient'))
+cur.execute('INSERT INTO tasks (task_type_id, title, content) VALUES(?, ?, ?)', (3, 'Start Week 3', 'Start week 3 of automation course on coursera'))
+cur.execute('INSERT INTO tasks (task_type_id, title, content) VALUES(?, ?, ?)', (3, 'HackerRank Tests', 'Take tests to move up a level'))
+cur.execute('INSERT INTO tasks (task_type_id, title, content, urgency) VALUES(?, ?, ?, ?)', (1, 'Find food', 'Make garri to drink before groundnut spoils', 'HIGH'))
 
 connection.commit()
 connection.close()
