@@ -9,16 +9,14 @@
                             <input type="checkbox" />
                             {{ task.title }}
                             <i class="fa fa-angle-down"></i>
-                            <i class="fa fa-angle-up"></i>
+                            <!-- <i class="fa fa-angle-up"></i> -->
                         </label>
                         <div class="content">
                             <form>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="inputEmail4">Notes</label>
-                                        <textarea name="content" class="form-control" rows="5">
-                                            {{ request.form['content'] or task.content }}
-                                        </textarea>
+                                        <textarea name="content" class="form-control" rows="5">{{ request.form['content'] or task.content }}</textarea>
                                     </div>
                                     <div class="form-row col-md-6">
                                         <div class="form-group col-md-12">
