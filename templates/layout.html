@@ -19,7 +19,7 @@
     {% endif %}
 </head>
 <body>
-    {% if url_for('detail') == request.path %}
+    {% if url_for('taskDetails', name=request.path.split('/')[-1]) == request.path %}
         {% include "app-nav.html" %}
     {% else %}
         {% include "home-nav.html" %}
