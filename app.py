@@ -1,14 +1,26 @@
 from itertools import groupby
 import sqlite3
+import arrow
 from flask import Flask, render_template, request, redirect, url_for, flash
+from werkzeug.exceptions import abort
 
 def get_db_connection():
     conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row
     return conn
 
+def get_task_type(name):
+    conn = get_db_connection()
+    task_type = conn.execute('SELECT * FROM task_types WHERE name = ?', (name,)).fetchone()
+    
+    conn.close()
+    
+    if task_type is None:
+        abort(404)
+    return task_type
+
 app = Flask(__name__)
-app.static_folder = 'static'
+app.config['SECRET_KEY'] = 'Something Secret'
 
 @app.route("/")
 def index():
@@ -20,14 +32,19 @@ def index():
     
     lists = {}
     for k, g in groupby(tasks, key=lambda t: t['name']):
-        lists[k] = list(g)  
+        lists[k] = list(g)
      
     conn.close()
     return render_template('index.html', lists=lists, types=task_types)
 
-@app.route("/todo-detail")
-def detail():
-    return render_template('todo-detail.html')
+@app.route("/todos-detail/<string:name>", methods=('GET', 'POST'))
+def taskDetails(name):
+    task_type = get_task_type(name)
+    
+    conn = get_db_connection()
+    tasks = conn.execute('SELECT * FROM tasks WHERE task_type_id = ?', (task_type['id'],)).fetchall()
+    
+    return render_template('todo-detail.html', tasks=tasks)
 
 @app.route("/create-task", methods=('POST',))
 def createTask():
@@ -49,7 +66,18 @@ def createTask():
             conn.close()
             
             return redirect(url_for('index'))
-    # return render_template('create.html', types=task_types)
+        
+@app.route("/delete-task/<int:id>", methods=('POST',))
+def deleteTask(id):
+    task_type = request.form['grpName']
+    
+    conn = get_db_connection()
+    conn.execute('DELETE FROM tasks WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    
+    flash("Task Deleted Successfully")
+    return redirect(url_for('taskDetails', name=task_type))
         
 
 if __name__ == "__main__":
