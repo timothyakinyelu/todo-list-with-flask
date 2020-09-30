@@ -3,6 +3,7 @@ import sqlite3
 import arrow
 from flask import Flask, render_template, request, redirect, url_for, flash
 from werkzeug.exceptions import abort
+from momentjs import momentjs
 
 def get_db_connection():
     conn = sqlite3.connect('database.db')
@@ -21,6 +22,7 @@ def get_task_type(name):
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Something Secret'
+app.add_template_global(name='momentjs', f=momentjs)
 
 @app.route("/")
 def index():
@@ -78,7 +80,23 @@ def deleteTask(id):
     
     flash("Task Deleted Successfully")
     return redirect(url_for('taskDetails', name=task_type))
+
+@app.route("/check-complete/<int:id>", methods=('POST',))      
+def checkComplete(id):
+    if request.method == 'POST':
+        completed = 'check' in request.form
+        if completed == True:
+            checked = 1
+        else:
+            checked = 0
+            
+        conn = get_db_connection()
+        conn.execute('UPDATE tasks SET completed = ?''WHERE id = ?', (checked, id))
         
+        conn.commit()
+        conn.close()
+        return redirect(url_for('index'))
+    
 
 if __name__ == "__main__":
     app.run(debug=True)
