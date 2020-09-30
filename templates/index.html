@@ -5,22 +5,44 @@
         <div class="card-deck">
             {% if lists %}
                 {% for list, items in lists.items() %}
-                <a class="card" href="{{ url_for('taskDetails', name=list) }}">
-                    {% for item in items %}
+                    <div class="card">
                         <div class="card-body">
                             <ul>
-                                <li>{{ item.title }}</li>
-                                <small>{{ item.date_created }}</small>
+                                {% for item in items %}
+                                <li class=item-cards>
+                                    <div class="col-sm-8 {% if item.completed == 1 %} task-completed {% endif %}">
+                                        <div class="row">
+                                            <div class="col-sm-1">
+                                                <form action="{{ url_for('checkComplete', id=item.id) }}" method="post">
+                                                    <input 
+                                                        id="task-{{item.id}}" 
+                                                        class="check-task-button" 
+                                                        type="checkbox" 
+                                                        name="check" {% if item.completed == 1 %} CHECKED {% endif %} onChange="this.form.submit()"/
+                                                    >
+                                                </form>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <label class="label" for="task-{{item.id}}">{{ item.title }}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span>
+                                        @ {{ momentjs(item.date_created).fromNow() }}
+                                    </span>
+                                </li>
+                                {% endfor %}
                             </ul>
                         </div>
-                    {% endfor %}
-                    <div class="card-footer">
-                        <strong>{{ list }}</strong>
-                        <p class="m-0 text-muted">
-                        <small>On this computer</small>
-                        </p>
+                        <a href="{{ url_for('taskDetails', name=list) }}">
+                            <div class="card-footer">
+                                <strong>{{ list }}</strong>
+                                <p class="m-0 text-muted">
+                                <small>On this computer</small>
+                                </p>
+                            </div>
+                        </a>  
                     </div>
-                </a>  
                 {% endfor %}
             {% else %}
                 <div class="card">
