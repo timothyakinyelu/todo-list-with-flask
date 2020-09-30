@@ -13,7 +13,7 @@ CREATE TABLE tasks(
     title VARCHAR NOT NULL,
     content TEXT NOT NULL,
     priority VARCHAR NOT NULL DEFAULT LOW,
-    complete INTEGER NOT NULL DEFAULT 0,
+    completed INTEGER NOT NULL DEFAULT 0,
     date_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (task_type_id) REFERENCES task_types (id)
 );
