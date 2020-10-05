@@ -1,0 +1,104 @@
+    {% extends 'layout.html' %}
+    {% block content %}
+        <hr class="m-2" />
+        <!-- cards containing items -->
+        <div class="card-deck">
+            {% if lists %}
+                {% for list, items in lists.items() %}
+                    <div class="card">
+                        <div class="card-body">
+                            <ul>
+                                {% for item in items %}
+                                <li class=item-cards>
+                                    <div class="col-sm-8 {% if item.completed == 1 %} task-completed {% endif %}">
+                                        <div class="row">
+                                            <div class="col-sm-1">
+                                                <form action="{{ url_for('checkComplete', id=item.id) }}" method="post">
+                                                    <input 
+                                                        id="task-{{item.id}}" 
+                                                        class="check-task-button" 
+                                                        type="checkbox" 
+                                                        name="check" {% if item.completed == 1 %} CHECKED {% endif %} onChange="this.form.submit()"/
+                                                    >
+                                                </form>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <label class="label" for="task-{{item.id}}">{{ item.title }}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span>
+                                        @ {{ momentjs(item.date_created).fromNow() }}
+                                    </span>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <a href="{{ url_for('taskDetails', name=list) }}">
+                            <div class="card-footer">
+                                <strong>{{ list }}</strong>
+                                <p class="m-0 text-muted">
+                                <small>On this computer</small>
+                                </p>
+                            </div>
+                        </a>  
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="card">
+                    <div class="card-body">
+                        <h6>No Tasks</h6>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="modal fade" id="newTask" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">Enter your City</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ url_for('createTask') }}" class="form-inline" method="post">
+                            <div class="form-group">
+                                <label>Select Type of Task</label>
+                                <select class="form-control" id="slct" name=task_type_id>
+                                    {% for type in types %}
+                                        <option value="{{type.id}}">
+                                            {{ type.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputNotes">Title</label>
+                                <input name="title" class="form-control" type="text" value="{{ request.form['title'] }}"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputNotes">Notes</label>
+                                <textarea name="content" class="form-control">{{ request.form['content'] }}</textarea>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="inputState">Priority</label>
+                                    <select id="inputState" class="form-control" name="priority">
+                                        <option value="HIGH">High</option>
+                                        <option value="LOW">Low</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button id="createTask" type="submit" class="btn btn-primary">
+                                Create Task
+                            </button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock content %}

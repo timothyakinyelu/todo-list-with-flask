@@ -1,0 +1,61 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+        {% if current_user.is_authenticated %}
+            <li class="nav-item">
+                <a href="#" 
+                    data-toggle="modal" 
+                    data-target="#newTask"
+                >
+                    <span class="badge badge-warning">New Task</span>
+                </a>
+                <!-- <button
+                    class="btn btn-secondary btn-sm"
+                    data-toggle="modal" 
+                    data-target="#newTask"
+                >
+                    New Task
+                </button> -->
+            </li>
+        {% endif %}
+        </ul>
+    </div>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+            {% if current_user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="btn btn-light mr-2 btn-sm" href="#">
+                        <i class="fa fa-list"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-light mr-2 btn-sm" href="#">
+                        <i class="fa fa-check"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-light mr-2 btn-sm" href="#">
+                        <i class="fa fa-search"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-light mr-2 btn-sm" href="#">
+                        <i class="fa fa-hamburger"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('auth.logout') }}" class="navbar-item">
+                        Logout
+                    </a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a href="{{ url_for('nonAuth.signup') }}" class="navbar-item">
+                        Sign Up
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
