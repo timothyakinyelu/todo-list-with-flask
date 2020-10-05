@@ -9,6 +9,10 @@ pylint = "*"
 [packages]
 flask = "*"
 arrow = "*"
+python-dotenv = "*"
+flask-login = "*"
+flask-sqlalchemy = "*"
+sqlalchemy-utils = "*"
 
 [requires]
 python_version = "3.8"
