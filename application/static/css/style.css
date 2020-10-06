@@ -22,7 +22,9 @@ li.item-cards span {
     font-weight: 400;
     color: #212529;
 }
-li.item-cards .task-completed  label {
+li.item-cards .task-completed  label, 
+li.card.task-completed label
+{
     text-decoration: line-through;
 }
 
