@@ -21,8 +21,11 @@
     {% endif %}
 </head>
 <body>
-    
-    {% include "home-nav.html" %}
+    {% if url_for('auth.taskDetails', name=request.path.split('/')[-1]) == request.path %}
+        {% include "app-nav.html" %}
+    {% else %}
+        {% include "home-nav.html" %}
+    {% endif %}
     <div class="container">
         {% block content %}{% endblock %}
     </div>

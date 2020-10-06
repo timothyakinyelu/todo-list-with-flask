@@ -3,10 +3,14 @@
         <div class="accordion vertical">
             <ul>
                 {% for task in tasks %}
-                    <li class="card">
-                        <input class="box" type="checkbox" id="checkbox-{{ task.id }}" name="checkbox-accordion" />
+                    <li class="card {% if task.completed == 1 %} task-completed {% endif %}">
+                        <input 
+                            class="box" 
+                            type="{% if task.completed == 1 %} hidden {% else %} checkbox {% endif %}" id="checkbox-{{ task.id }}" 
+                            name="checkbox-accordion"
+                        />
                         <label class="list-label" for="checkbox-{{ task.id }}">
-                            <input type="checkbox" />
+                            <input type="checkbox"  {% if task.completed == 1 %} CHECKED {% endif %} />
                             {{ task.title }}
                             <i class="fa fa-angle-down"></i>
                             <!-- <i class="fa fa-angle-up"></i> -->
@@ -34,7 +38,7 @@
                                 </div>
                                 <!-- <button type="submit" class="btn btn-danger" style="float:right">Delete</button> -->
                             </form>
-                            <form action="{{ url_for('deleteTask', id=task.id) }}" method="POST">
+                            <form action="{{ url_for('auth.deleteTask', id=task.id) }}" method="POST">
                                 <input type="hidden" name="grpName" value="{{ request.path.split('/')[-1] }}" />
                                 <input type="submit" value="Delete"
                                         class="btn btn-danger btn-sm"
