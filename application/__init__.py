@@ -2,12 +2,15 @@ import os
 from flask import Flask
 from flask_login import LoginManager
 from application._helpers import load_config
+from application.momentjs import momentjs
 
 def create_app():
     app = Flask(__name__, template_folder='./templates')
     mode = app.env
     Config = load_config(mode)
     app.config.from_object(Config)
+    
+    app.add_template_global(name='momentjs', f=momentjs)
     
     from .db import db
     db.init_app(app)
